@@ -72,8 +72,7 @@
 
 <script>
 import { validPasswordLength, validUsernameLength } from '@/utils/validate'
-import request from '@/utils/request'
-// import { code } from '@/api/user'
+import { code } from '@/api/user'
 export default {
   name: 'Login',
   data() {
@@ -108,10 +107,12 @@ export default {
       codeImgUrl: ''
     }
   },
-  async created() {
-    await request.get('/api/user-service/user/imageCode/:clientToken', { reponseType: 'Image' }).then(reponse => {
-      this.dynamicImage = window.URL.createObjectURL(reponse.data)
-    })
+  created() {
+    this.getCode()
+    // console.log(res)
+    // await request.get('/api/user-service/user/imageCode/:clientToken', { reponseType: 'Image' }).then(reponse => {
+    //   this.dynamicImage = window.URL.createObjectURL(reponse.data)
+    // })
   },
 
   methods: {
@@ -124,6 +125,12 @@ export default {
       this.$nextTick(() => {
         this.$refs.password.focus()
       })
+    },
+    async getCode() {
+      const res = await code()
+      const blob = res.data
+      this.codeImgUrl = window.URL.createObjectURL(blob)
+      console.log(res)
     },
     login() {
 
@@ -251,5 +258,9 @@ $light_gray:#eee;
     cursor: pointer;
     user-select: none;
   }
+}
+.el-image {
+  transform: translateX(42px);
+  height: 52px;
 }
 </style>

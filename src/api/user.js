@@ -12,7 +12,9 @@ export function login(data) {
 // 获取验证码
 export function code() {
   return request({
-    url: '/api/user-service/user/imageCode/:clientToken',
-    method: 'GET'
+    url: '/api/user-service/user/imageCode/12122',
+    method: 'GET',
+    // responseType: 'image'
+    responseType: 'blob'
   })
 }
