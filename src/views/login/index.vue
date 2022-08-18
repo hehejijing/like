@@ -6,7 +6,7 @@
           <img src="../../assets/login/logo.png" alt="">
         </h3>
       </div>
-      <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+      <el-form ref="loginForm" :model="loginForm" :rules="loginFormRules" class="login-form" auto-complete="on" label-position="left">
 
         <el-form-item prop="username">
           <span class="svg-container">
@@ -15,13 +15,9 @@
             />
           </span>
           <el-input
-            ref="username"
-            v-model.trim="loginForm.username"
+
+            v-model="loginForm.username"
             placeholder="请输入账号"
-            name="username"
-            type="text"
-            tabindex="1"
-            auto-complete="on"
           />
         </el-form-item>
 
@@ -30,14 +26,11 @@
             <span class="el-icon-lock" style="font-size:16px" />
           </span>
           <el-input
-            :key="passwordType"
             ref="password"
-            v-model.trim="loginForm.password"
+            v-model="loginForm.password"
             :type="passwordType"
             placeholder="请输入密码"
-            name="password"
-            tabindex="2"
-            auto-complete="on"
+
             @keyup.enter.native="handleLogin"
           />
           <span class="show-pwd" @click="showPwd">
@@ -45,19 +38,17 @@
           </span>
         </el-form-item>
 
-        <el-form-item>
+        <el-form-item prop="code">
           <span class="svg-container">
             <span class="el-icon-paperclip" />
           </span>
           <el-input
 
+            v-model="loginForm.code"
             placeholder="请输入验证码"
-
-            tabindex="2"
-            auto-complete="on"
           >
             <template #suffix>
-              <el-image :src="codeImgUrl" />
+              <el-image :src="codeImgUrl" @click="getCode" />
             </template>
           </el-input>
 
@@ -72,7 +63,7 @@
 
 <script>
 import { validPasswordLength, validUsernameLength } from '@/utils/validate'
-import { code } from '@/api/user'
+import { code, login } from '@/api/user'
 export default {
   name: 'Login',
   data() {
@@ -80,39 +71,37 @@ export default {
       if (validPasswordLength(value)) {
         return callback
       } else {
-        return callback(new Error('密码长度必须是6-18位'))
+        return callback(new Error('密码长度必须是5-18位'))
       }
     }
     const validUsernameLength1 = (rule, value, callback) => {
       if (validUsernameLength(value)) {
         return callback
       } else {
-        return callback(new Error('账户名长度必须是6-18位'))
+        return callback(new Error('账户名长度必须是5-18位'))
       }
     }
     return {
       loginForm: {
-        username: 'admin123',
-        password: '111111'
+        username: 'admin',
+        password: 'admin',
+        code: ''
       },
-      loginRules: {
+      loginFormRules: {
         username: [{ required: true, message: '账号必填', trigger: 'blur' },
 
           { validator: validUsernameLength1, trigger: 'blur' }],
         password: [{ required: true, message: '密码必填', trigger: 'blur' },
-          { validator: validPasswordLength1, trigger: 'blur' }]
+          { validator: validPasswordLength1, trigger: 'blur' }],
+        code: [{ required: true, message: '验证码必填', trigger: 'blur' }]
       },
       passwordType: 'password',
       loading: false,
       codeImgUrl: ''
     }
   },
-  created() {
+  mounted() {
     this.getCode()
-    // console.log(res)
-    // await request.get('/api/user-service/user/imageCode/:clientToken', { reponseType: 'Image' }).then(reponse => {
-    //   this.dynamicImage = window.URL.createObjectURL(reponse.data)
-    // })
   },
 
   methods: {
@@ -128,12 +117,28 @@ export default {
     },
     async getCode() {
       const res = await code()
+      console.log(res)
+      // this.clientToken = res.data.size
       const blob = res.data
       this.codeImgUrl = window.URL.createObjectURL(blob)
-      console.log(res)
     },
-    login() {
-
+    async login() {
+      const data = {
+        loginName: this.loginForm.username,
+        password: this.loginForm.password,
+        mobile: '15268141464',
+        code: this.loginForm.code,
+        clientToken: '12122',
+        loginType: 0,
+        account: '15268141464'
+      }
+      try {
+        // await this.$refs.loginForm.validate()
+        const res = await login(data)
+        console.log(res)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }
