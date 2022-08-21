@@ -64,6 +64,7 @@
 <script>
 import { validPasswordLength, validUsernameLength } from '@/utils/validate'
 import { code, login } from '@/api/user'
+// import { setToken } from '@/utils/auth'
 export default {
   name: 'Login',
   data() {
@@ -117,9 +118,9 @@ export default {
     },
     async getCode() {
       const res = await code()
-      console.log(res)
+      // console.log(res)
       // this.clientToken = res.data.size
-      const blob = res.data
+      const blob = res
       this.codeImgUrl = window.URL.createObjectURL(blob)
     },
     async login() {
@@ -134,10 +135,17 @@ export default {
       }
       try {
         // await this.$refs.loginForm.validate()
+        this.loading = true
         const res = await login(data)
+        this.$store.commit('user/setToken', res.token)
+        this.$router.push('/')
+        // console.log(this.$store)
         console.log(res)
-      } catch (error) {
-        console.log(error)
+      } catch (e) {
+        console.log(2)
+        console.log(e)
+      } finally {
+        this.loading = false
       }
     }
   }

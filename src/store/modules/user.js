@@ -1,5 +1,5 @@
 
-// import { resetRouter } from '@/router'
+import { setToken } from '@/utils/auth'
 
 const state = {
   token: null
@@ -8,8 +8,9 @@ const state = {
 
 const mutations = {
 
-  SET_TOKEN: (state, token) => {
+  setToken(state, token) {
     state.token = token
+    setToken(token)
   }
 
 }

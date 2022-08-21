@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { Message } from 'element-ui'
+
 // import store from '@/store'
 
 const request = axios.create({
@@ -19,4 +21,18 @@ const request = axios.create({
 //     return Promise.reject(error)
 //   }
 // )
+
+request.interceptors.response.use((response) => {
+  const { status, statusText, data } = response
+  if (status === 200) {
+    // Message.success(statusText)
+    return data
+  } else {
+    Message.error(statusText)
+    return Promise.reject(new Error(statusText))
+  }
+}, (err) => {
+  return Promise.reject(err)
+})
+
 export default request
