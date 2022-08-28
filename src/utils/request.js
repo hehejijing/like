@@ -4,7 +4,7 @@ import { Message } from 'element-ui'
 // import store from '@/store'
 
 const request = axios.create({
-  baseURL: 'http://likede2-admin.itheima.net/likede',
+  // baseURL: 'http://likede2-admin.itheima.net/likede',
   timeout: 5000
 })
 // 请求拦截器

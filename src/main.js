@@ -11,6 +11,8 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
+// import Component from '@/components'
+// Vue.use(Component) // 注册自己的插件
 
 import '@/icons' // icon
 import '@/permission' // permission control

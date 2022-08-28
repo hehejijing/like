@@ -137,12 +137,12 @@ export default {
         // await this.$refs.loginForm.validate()
         this.loading = true
         const res = await login(data)
+        console.log(res)
         this.$store.commit('user/setToken', res.token)
         this.$router.push('/')
         // console.log(this.$store)
         console.log(res)
       } catch (e) {
-        console.log(2)
         console.log(e)
       } finally {
         this.loading = false
