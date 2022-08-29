@@ -1,6 +1,6 @@
 <template>
   <div>
-    员工
+    策略
   </div>
 </template>
 

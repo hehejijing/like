@@ -1,6 +1,6 @@
 <template>
   <div>
-    员工
+    点位
   </div>
 </template>
 

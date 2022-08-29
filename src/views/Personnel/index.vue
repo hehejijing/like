@@ -1,6 +1,6 @@
 <template>
   <div>
-    员工
+    人员
   </div>
 </template>
 

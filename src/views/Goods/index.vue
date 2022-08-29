@@ -1,6 +1,6 @@
 <template>
   <div>
-    员工
+    商品
   </div>
 </template>
 

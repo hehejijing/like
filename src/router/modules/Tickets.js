@@ -15,6 +15,12 @@ export default {
     meta: { // 写到了二级路由上
       title: '工单管理', // 这里用title的原因是因为左侧导航读取了这里的title属性
       icon: 'el-icon-s-order'
-    }
+    },
+    children: [{
+      name: 'Operational tickets',
+      path: 'operationaltickets',
+      component: () => import('@/views/Tickets/components/OperationalTickets')
+
+    }]
   }]
 }
